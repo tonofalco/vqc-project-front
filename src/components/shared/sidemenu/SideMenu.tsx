@@ -4,6 +4,7 @@ import './SideMenu.css';
 import vqgLogo from './../../../assets/logoBlanco.webp';
 import { SideMenuItem } from './SideMenuItem';
 import { useAuthStore } from '../../../stores';
+import { capitalizeText } from '../../../helpers';
 
 
 interface MenuItem {
@@ -27,6 +28,8 @@ export const SideMenu = ({ onClose }: { onClose?: () => void }) => {
   const logoutUser = useAuthStore((state) => state.logoutUser);
   const user = useAuthStore((state) => state.user);
 
+  
+
   return (
     <div
       id="menu"
@@ -42,8 +45,8 @@ export const SideMenu = ({ onClose }: { onClose?: () => void }) => {
         <div className="inline-flex space-x-3 items-center cursor-pointer">
           <IoPersonCircleOutline className="rounded-full w-10 h-10" />
           <div className="flex flex-col">
-            <span className="text-xl font-semibold text-left">{user?.name}</span>
-            <span className="text-slate-500">{user?.role}</span>
+            <span className="text-xl font-semibold text-left">{capitalizeText(user?.name || 'usuario')}</span>
+            <span className="text-slate-500">{capitalizeText(user?.role || 'sin rol')}</span>
           </div>
         </div>
       </div>
