@@ -8,3 +8,4 @@ export * from './03-slices/WeddingInvitationPage';
 
 
 export * from './auth/LoginPage';
+export * from './Cotizacion/CotizacionPage';
