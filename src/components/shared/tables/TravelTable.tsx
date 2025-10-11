@@ -1,5 +1,5 @@
 import { Card, Typography } from "@material-tailwind/react";
-import { formatDate, filterFutureEvents } from "../../../helpers";
+import { formatDate, formatCurrencyMXN, filterFutureEvents } from "../../../helpers";
 
 const TABLE_HEAD = ["Fecha salida", "Fecha regreso", "Cliente", "Destino", "Precio total", "Anticipo", "Deuda", "Vendedor", ""];
 
@@ -96,7 +96,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {price}
+                      {formatCurrencyMXN(price)}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
@@ -105,7 +105,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {advance}
+                      {formatCurrencyMXN(advance)}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
@@ -114,7 +114,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {due}
+                      {formatCurrencyMXN(due)}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
