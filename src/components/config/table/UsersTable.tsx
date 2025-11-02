@@ -1,7 +1,11 @@
 import { Card, Typography } from "@material-tailwind/react";
-import { formatDate, filterPastEvents  } from "../../../helpers";
+import { IoPencilSharp, IoTrashOutline } from "react-icons/io5";
+import { TooltipCustom } from "../../shared/tooltip/TooltipCustom";
+import { useUser } from "../../../hooks";
 
-const TABLE_HEAD = ["Fecha salida", "Cliente", "Destino", ""];
+
+
+const TABLE_HEAD = ["Nombre", "Email", "Rol", "Acciones"];
 
 interface TravelTableProps {
   currentPage: number;
@@ -10,15 +14,13 @@ interface TravelTableProps {
   events: Array<any>;
 }
 
-export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: TravelTableProps) => {
+export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: TravelTableProps) => {
 
-  // filtrar usando el campo "start"
-  const pastEvents = filterPastEvents (events, "start");
-
+  const { handleSelectUser } = useUser();
   // calcular rango de eventos para la página actual
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedEvents = pastEvents.slice(startIndex, endIndex);
+  const paginatedEvents = events.slice(startIndex, endIndex);
 
   const tdClasses = "p-4 border-b border-blue-gray-50 max-w-[250px] break-words";
 
@@ -46,8 +48,8 @@ export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: Tra
         </thead>
         <tbody>
           {events && events.length > 0 ? (
-            paginatedEvents.map(({ id, start, nameClient, destination }, index) => {
-              
+            paginatedEvents.map(({ id, name, email, role }, index) => {
+
               const isLast = index === events.length - 1;
               const classes = isLast
                 ? "p-4"
@@ -61,7 +63,7 @@ export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: Tra
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {formatDate(start)}
+                      {name}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
@@ -70,7 +72,7 @@ export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: Tra
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {nameClient}
+                      {email}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
@@ -79,7 +81,23 @@ export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: Tra
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {destination}
+                      {role}
+                    </Typography>
+                  </td>
+                  <td className={`${classes} ${tdClasses}`}>
+                    <Typography {...({} as any)}
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      <span>
+                        <TooltipCustom content="Editar usuario" placement="top">
+                          <button data-tooltip-target="tooltip-default" className="edit-button"  onClick={() => handleSelectUser({ uid: id, name, email, role, ok:true })}><IoPencilSharp /></button>
+                        </TooltipCustom>
+                        <TooltipCustom content="Eliminar usuario" placement="top">
+                          <button className="delete-button"><IoTrashOutline /></button>
+                        </TooltipCustom>
+                      </span>
                     </Typography>
                   </td>
                 </tr>
@@ -88,15 +106,15 @@ export const MyTravelsTable = ({currentPage, itemsPerPage, setPage, events}: Tra
           ) : (
             <tr>
               <td colSpan={TABLE_HEAD.length} className="p-4 text-center">
-                No hay viajes registrados proximos
+                No hay usuarios registrados
               </td>
             </tr>
           )}
         </tbody>
       </table>
 
-      <div className="flex justify-start lg:justify-center gap-2 mt-4">
-        {Array.from({ length: Math.ceil(pastEvents.length / itemsPerPage) }, (_, i) => (
+      <div className="flex justify-start lg:justify-center gap-2 mt-4 mb-4">
+        {Array.from({ length: Math.ceil(events.length / itemsPerPage) }, (_, i) => (
           <button
             key={i}
             className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
