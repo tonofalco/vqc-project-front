@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useEarthEventStore, useTablePaginationStore } from "../../stores";
 import { WhiteCard } from "../shared/cards/WhiteCard"
-import { TravelTable } from '../shared/tables/TravelTable';
+import { TravelTable } from './table/TravelTable';
 
 
 export const LandTravelsDashboard = () => {

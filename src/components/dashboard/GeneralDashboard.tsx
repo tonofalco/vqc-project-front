@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { WhiteCard } from "../shared/cards/WhiteCard"
 import { useEarthEventStore, useTablePaginationStore } from "../../stores";
-import { MyTravelsTable } from "../shared/tables/MyTravelsTable";
+import { MyTravelsTable } from "./table/MyTravelsTable";
 
 
 
@@ -9,7 +9,6 @@ export const GeneralDashboard = () => {
 
   const { events, fetchEvents } = useEarthEventStore();
   const {myLandItemsPerPage, myLandCurrentPage, myLandSetPage} = useTablePaginationStore();
-// 
 
   // fetch inicial
   useEffect(() => {
