@@ -7,6 +7,7 @@ export * from './shared/cards/WhiteCard';
 
 export * from './shared/sidemenu/SideMenu';
 export * from './shared/cards/WhiteCard';
+export * from './shared/modals/ModalForm';
 
 export * from './dashboard/table/MyTravelsTable.js'
 export * from './dashboard/table/TravelTable.js';
