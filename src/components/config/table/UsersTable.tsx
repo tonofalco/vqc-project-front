@@ -92,7 +92,7 @@ export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: Trave
                     >
                       <span>
                         <TooltipCustom content="Editar usuario" placement="top">
-                          <button data-tooltip-target="tooltip-default" className="edit-button"  onClick={() => handleSelectUser({ uid: id, name, email, role, ok:true })}><IoPencilSharp /></button>
+                          <button data-tooltip-target="tooltip-default" className="edit-button me-2"  onClick={() => handleSelectUser({ uid: id, name, email, role, ok:true })}><IoPencilSharp /></button>
                         </TooltipCustom>
                         <TooltipCustom content="Eliminar usuario" placement="top">
                           <button className="delete-button"><IoTrashOutline /></button>

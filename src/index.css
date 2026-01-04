@@ -32,9 +32,9 @@ input:not(.swal2-input)[type=text],input:not(.swal2-input)[type=password], input
 }
 
 .edit-button {
-  @apply transition-all text-gray-800 hover:text-slate-100 hover:bg-green-800  px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
+  @apply transition-all text-slate-100 bg-green-800 hover:bg-green-700   px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
 }
 
 .delete-button {
-  @apply transition-all text-gray-800 hover:text-slate-100 hover:bg-red-800  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
+  @apply transition-all text-slate-100 bg-red-800 hover:bg-red-700  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
 }

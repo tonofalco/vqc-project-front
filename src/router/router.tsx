@@ -2,17 +2,19 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { Root } from '../Root';
 import { AuthLayout, DashboardLayout } from '../layouts';
-import { Dashboard, JiraPage, LoginPage, PersonPage, WeddingInvitationPage, CotizacionPage } from '../pages';
+import { Dashboard, JiraPage, LoginPage, PersonPage, CotizacionPage, ConfigPage, UserPageConfig, FirstDayPageConfig, ExtraDayPageConfig} from '../pages';
+import { authURL, routesURL } from '../enum/routesURL';
 
 
-export const router = createBrowserRouter( [
+
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     children: [
       /// Dashboard Routes
       {
-        path: 'dashboard',
+        path: routesURL.DASHBOARD,
         element: <DashboardLayout />,
         children: [
           {
@@ -20,7 +22,7 @@ export const router = createBrowserRouter( [
             element: <Dashboard />
           },
           {
-            path: 'cotizacion',
+            path: routesURL.QUOTE,
             element: <CotizacionPage />
           },
           {
@@ -31,21 +33,37 @@ export const router = createBrowserRouter( [
             path: 'tasks',
             element: <JiraPage />
           },
+            {
+            path: 'usuarios',
+            element: <UserPageConfig />
+          },
           {
-            path: 'wedding-invitation',
-            element: <WeddingInvitationPage />
-          }
+            path: routesURL.CONFIG,
+            element: <ConfigPage />,
+          },
+          {
+            path: routesURL.CONFIG_USERS,
+            element: <UserPageConfig />,
+          },
+          {
+            path: routesURL.CONFIG_FIRST_DAY,
+            element: <FirstDayPageConfig />,
+          },
+            {
+            path: routesURL.CONFIG_EXTRA_DAY,
+            element: <ExtraDayPageConfig />,
+          },
 
         ]
       },
 
       /// Auth Routes
       {
-        path: 'auth',
+        path: authURL.AUTH,
         element: <AuthLayout />,
         children: [
           {
-            path: 'login',
+            path: authURL.LOGIN,
             element: <LoginPage />
           }
         ]
@@ -54,4 +72,4 @@ export const router = createBrowserRouter( [
 
     ],
   },
-] );
+]);
