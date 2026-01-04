@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useEarthEventStore, useTablePaginationStore } from "../../stores";
 import { WhiteCard } from "../shared/cards/WhiteCard"
+import { useEarthEventStore, useTablePaginationStore } from "../../stores";
 import { TravelTable } from './table/TravelTable';
 
 

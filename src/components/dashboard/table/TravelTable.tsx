@@ -1,7 +1,7 @@
 import { Card, Typography } from "@material-tailwind/react";
-import { formatDate, formatCurrencyMXN, filterFutureEvents } from "../../../helpers";
+import { formatDate, formatCurrencyMXN, filterFutureEvents } from "src/helpers/index";
 
-const TABLE_HEAD = ["Fecha salida", "Fecha regreso", "Cliente", "Destino", "Precio total", "Anticipo", "Deuda", "Vendedor", ""];
+const TABLE_HEAD = ["Fecha salida", "Fecha regreso", "Cliente", "Destino", "Precio total", "Anticipo", "Deuda", "Vendedor", "Acciones"];
 
 interface TravelTableProps {
   currentPage: number;
@@ -50,13 +50,13 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
             paginatedEvents.map(({ id, start, end, nameClient, destination, price, advance, user }, index) => {
               const due = price - advance;
               const isLast = index === events.length - 1;
-              const classes = isLast
+              const borderStyle = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
 
               return (
                 <tr key={id}>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -65,7 +65,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {formatDate(start)}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -74,7 +74,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {formatDate(end)}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -83,7 +83,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {nameClient}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -92,7 +92,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {destination}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -101,7 +101,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {formatCurrencyMXN(price)}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -110,7 +110,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {formatCurrencyMXN(advance)}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
@@ -119,13 +119,22 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
                       {formatCurrencyMXN(due)}
                     </Typography>
                   </td>
-                  <td className={`${classes} ${tdClasses}`}>
+                  <td className={`${borderStyle} ${tdClasses}`}>
                     <Typography {...({} as any)}
                       variant="small"
                       color="blue-gray"
                       className="font-normal"
                     >
                       {user?.name || "Sin usuario"}
+                    </Typography>
+                  </td>
+                  <td className={`${borderStyle} ${tdClasses}`}>
+                    <Typography {...({} as any)}
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      <button>X</button>
                     </Typography>
                   </td>
                 </tr>
@@ -139,6 +148,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
             </tr>
           )}
         </tbody>
+
       </table>
 
       <div className="flex justify-start lg:justify-center gap-2 my-4">
@@ -152,6 +162,7 @@ export const TravelTable = ({currentPage, itemsPerPage, setPage, events}: Travel
           </button>
         ))}
       </div>
+
     </Card>
   );
 };

@@ -1,10 +1,10 @@
 import type { IconType } from 'react-icons';
 import { IoSpeedometerOutline, IoMapOutline, IoLogOutOutline, IoSettingsOutline, IoAirplaneOutline, IoBus, IoPersonCircleOutline } from 'react-icons/io5';
 import './SideMenu.css';
-import vqgLogo from './../../../assets/logoBlanco.webp';
-import { SideMenuItem } from './SideMenuItem';
-import { useAuthStore } from '../../../stores';
-import { capitalizeText } from '../../../helpers';
+import vqgLogo from 'src/assets/logoBlanco.webp';
+import { SideMenuItem } from 'src/components/shared/sidemenu/SideMenuItem';
+import { useAuthStore } from 'src/stores/index';
+import { capitalizeText } from 'src/helpers/index';
 
 
 interface MenuItem {

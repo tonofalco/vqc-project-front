@@ -8,7 +8,7 @@ import { MyTravelsTable } from "./table/MyTravelsTable";
 export const GeneralDashboard = () => {
 
   const { events, fetchEvents } = useEarthEventStore();
-  const {myLandItemsPerPage, myLandCurrentPage, myLandSetPage} = useTablePaginationStore();
+  const { myLandItemsPerPage, myLandCurrentPage, myLandSetPage } = useTablePaginationStore();
 
   // fetch inicial
   useEffect(() => {
@@ -17,17 +17,14 @@ export const GeneralDashboard = () => {
 
   // log cada vez que cambian los eventos
   useEffect(() => {
-    console.log('events', events[0]?.userId);
   }, [events]);
 
 
   return (
     <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-4">
 
-
-      <WhiteCard centered>
-
-        <h2>Mis registros Terrestres</h2>
+      <WhiteCard centered className="min-w-0">
+        <h2 className="text-start">Mis viajes Terrestres</h2>
         <hr />
 
         <MyTravelsTable
@@ -35,13 +32,9 @@ export const GeneralDashboard = () => {
           itemsPerPage={myLandItemsPerPage}
           setPage={myLandSetPage}
           events={events} />
-
-
       </WhiteCard>
 
-
-      <WhiteCard centered>
-
+      <WhiteCard centered className="min-w-0">
         <h2>Mis registros Aéreos</h2>
         <hr className="bg-black" />
       </WhiteCard>
