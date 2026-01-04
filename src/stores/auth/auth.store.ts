@@ -29,9 +29,10 @@ const storeApi: StateCreator<AuthState> = (set) => ({
 
     } catch (error) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
-      throw 'unauthenticated'
+      throw error instanceof Error
+        ? error
+        : new Error('unauthenticated');
     }
-
   },
 
   checkAuthStatus: async () => {
@@ -40,6 +41,7 @@ const storeApi: StateCreator<AuthState> = (set) => ({
       set({ status: 'authorized', token, user });
     } catch (error) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
+      console.error('Auth status check failed:', error);
     }
   },
 
