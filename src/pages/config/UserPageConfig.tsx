@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
-import { IoPersonAddOutline } from "react-icons/io5";
-
-import { TooltipCustom, UsersTable } from '../../components';
-import { WhiteCard } from '../../components/shared/cards/WhiteCard';
-import { useTablePaginationStore, useUsersStore } from '../../stores';
-import { EjemploBoton } from '../../components/config/form/userForm';
-import { ModalForm } from '../../components/shared/modals/modalForm';
+import { UsersTable, ModalForm } from 'src/components';
+import { WhiteCard } from 'src/components/shared/cards/WhiteCard';
+import { useTablePaginationStore, useUsersStore } from 'src/stores';
+import { CreateNewUser } from 'src/components/config/form/CreateNewUser';
 
 
 
@@ -22,7 +19,6 @@ export const UserPageConfig = () => {
 
   // log cada vez que cambian los eventos
   useEffect(() => {
-    console.log('users', users);
   }, [users]);
 
   return (
@@ -34,11 +30,8 @@ export const UserPageConfig = () => {
       <WhiteCard centered>
         <div className='inline-flex gap-3'>
           <h2>Lista de usuarios</h2>
-          <TooltipCustom content="Registrar usuario" placement="top">
-            <button className='edit-button'><IoPersonAddOutline /></button>
-          </TooltipCustom>
-            <EjemploBoton />
-            <ModalForm />
+          <CreateNewUser />
+          <ModalForm />
         </div>
 
         <hr />
