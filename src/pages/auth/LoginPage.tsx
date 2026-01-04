@@ -1,7 +1,9 @@
-import vqgLogo from './../../assets/logoBlanco.webp';
-import { useAuthStore, useModalStore } from '../../stores';
+import vqgLogo from 'src/assets/logoBlanco.webp';
+import { useAuthStore, useModalStore } from 'src/stores/index';
 import { useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
+import { routesURL } from 'src/enum/routesURL';
+
 
 
 export const LoginPage = () => {
@@ -14,19 +16,18 @@ export const LoginPage = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const { username, password, remember } = event.target as HTMLFormElement;
-    const { username, password, remember } = event.target as typeof event.target & {
+
+    const { username, password } = event.target as typeof event.target & {
       username: { value: string };
       password: { value: string };
-      remember: { checked: boolean }
     };
-    console.log(username.value, password.value, remember.checked);
 
     try {
       await loginUser(username.value, password.value);
-      navigate('/dashboard')
+      navigate(routesURL.DASHBOARD);
     } catch (error) {
       errorModal('Error', 'No se pudo iniciar sesión');
+      throw error;
     }
 
   }
@@ -43,21 +44,23 @@ export const LoginPage = () => {
 
       <form onSubmit={onSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-600">Email</label>
-          <input type="text" name="username" autoComplete="off" />
+          <label htmlFor="username" className="block text-gray-600">Email</label>
+          <input type="text" name="username" autoComplete="off" /> 
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-600">Contraseña</label>
+          <label htmlFor="password" className="block text-gray-600">Contraseña</label>
           <input type="password" name="password" autoComplete="off" />
         </div>
 
-        <div className="mb-4 flex items-center">
+        {/* <div className="mb-4 flex items-center">
           <input type="checkbox" name="remember" className="text-blue-500" />
-          <label className="text-gray-600 ml-2">Remember Me</label>
-        </div>
-        
-          <button type="submit" className="bg-blue-500 ">Login </button>
+          <label htmlFor="remember" className="text-gray-600 ml-2">
+            Remember Me
+          </label>
+        </div> */}
+
+        <button type="submit" className="bg-blue-500 ">Login </button>
 
       </form>
     </>
