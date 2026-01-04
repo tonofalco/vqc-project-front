@@ -117,7 +117,7 @@ export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: Trave
         {Array.from({ length: Math.ceil(events.length / itemsPerPage) }, (_, i) => (
           <button
             key={i}
-            className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            className={`px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-500 hover:bg-blue-400 text-white" : "bg-gray-200"}`}
             onClick={() => setPage(i + 1)}
           >
             {i + 1}
