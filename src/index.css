@@ -31,10 +31,22 @@ input:not(.swal2-input)[type=text],input:not(.swal2-input)[type=password], input
     @apply transition-all hover:bg-blue-800  px-8 py-2 rounded-3xl text-gray-800 hover:text-slate-100 font-semibold uppercase tracking-wide shadow-md;
 }
 
+.primary-button {
+  @apply transition-all text-slate-100 bg-blue-500 hover:bg-blue-400   px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
+}
+
+.secondary-button {
+  @apply transition-all text-slate-100 bg-gray-500 hover:bg-gray-400  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
+}
+
 .edit-button {
   @apply transition-all text-slate-100 bg-green-800 hover:bg-green-700   px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
 }
 
 .delete-button {
   @apply transition-all text-slate-100 bg-red-800 hover:bg-red-700  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
+}
+
+.close-button {
+  @apply transition-all text-slate-100 bg-red-700 hover:bg-red-600  px-4 py-2 rounded-xl font-semibold uppercase tracking-wide shadow-md;
 }
