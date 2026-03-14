@@ -1,94 +1,171 @@
-import { useModalFormStore } from "src/stores";
+import { useState, useEffect } from "react";
+import { useModalFormStore, useUsersStore } from "src/stores";
 import { TooltipCustom } from "src/components";
 import { IoPersonAddOutline } from "react-icons/io5";
 
-
 export const CreateNewUser = () => {
+  const { openModal, closeModal, isOpen } = useModalFormStore();
+  const { addUser, loading, activeUser, setActiveUser, updateUser } = useUsersStore();
 
-  const { openModal, closeModal } = useModalFormStore();
-  const labelStyle = "block text-gray-700 text-sm font-bold mb-1";
+  // 1. Estado elevado al padre
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    role: "user",
+    password: "",
+    passwordRenew: ""
+  });
 
-  const handleClick = () => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
+
+const handleSubmit = async () => {
+    // Validaciones
+    if (formData.password && formData.password !== formData.passwordRenew) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
+    const { passwordRenew, ...dataToSend } = formData;
+    let success = false;
+
+    if (activeUser) {
+      // 📝 MODO EDICIÓN
+      // El ID puede venir como 'uid', 'id' o '_id' según tu hook useUser
+      const id = activeUser.uid ;
+      success = await updateUser(id.toString(), dataToSend);
+    } else {
+      // 🆕 MODO CREACIÓN
+      success = await addUser(dataToSend);
+    }
+
+    if (success) {
+      closeModal();
+      setActiveUser(null); // Limpiar el usuario seleccionado
+    }
+  };
+
+  useEffect(() => {
+    if (activeUser) {
+      setFormData({
+        name: activeUser.name || "",
+        email: activeUser.email || "",
+        role: activeUser.role || "user",
+        password: "", // Normalmente la contraseña no se precarga por seguridad
+        passwordRenew: ""
+      });
+    }
+  }, [activeUser]);
+
+  // 2. Sincronización: Actualiza los slots del modal cuando el estado cambia
+  useEffect(() => {
+    if (isOpen) {
+      renderModalContents();
+    }
+  }, [formData, loading, isOpen]); // Se dispara al escribir o al cambiar el loading
+
+
+  useEffect(() => {
+  // Si hay un usuario activo y el modal aún está cerrado...
+  if (activeUser && !isOpen) {
+    renderModalContents(); // Esto ejecuta el openModal() con los datos ya cargados
+  }
+}, [activeUser]); // Se dispara cada vez que seleccionas a alguien en la tabla
+
+  const renderModalContents = () => {
+    const isEditing = !!activeUser;
+
     openModal(
       // 🔹 HEADER
+      <h1>{isEditing ? `Editar Usuario` : "Registro De Nuevo Usuario"}</h1>,
+
+      // 🔹 CONTENT (Cuerpo del modal)
       <div>
-        <h1>Registro De Nuevo Usuario</h1>
-      </div>,
-
-      // 🔹 CONTENT
-      <form action="">
-
         <div className="mb-3">
-          <label className={labelStyle} htmlFor="username">
-            Nombre De Usuario
-          </label>
+          <label htmlFor="name">Nombre De Usuario</label>
           <input
             type="text"
-            id="username"
-            className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-          />
+            id="name"
+            value={formData.name}
+            onChange={handleChange} />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
           <div>
-            <label className={labelStyle} htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
+              type="email"
               id="email"
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-            />
+              value={formData.email}
+              onChange={handleChange} />
           </div>
-
           <div>
-            <label className={labelStyle} htmlFor="role">
-              Rol
-            </label>
-            <input
-              type="text"
+            <label htmlFor="role">Rol</label>
+            <select
               id="role"
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-            />
+              className={`cursor-pointer`}
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="user">Usuario (user)</option>
+              <option value="admin">Administrador (admin)</option>
+            </select>
           </div>
-
           <div>
-            <label className={labelStyle} htmlFor="password">
-              Contraseña
-            </label>
+            <label htmlFor="password">Contraseña</label>
             <input
-              type="text"
+              type="password"
               id="password"
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-            />
+              value={formData.password}
+              onChange={handleChange} />
           </div>
-
           <div>
-            <label className={labelStyle} htmlFor="passwordRenew">
-              Confirmar Contraseña
-            </label>
+            <label htmlFor="passwordRenew">Confirmar Contraseña</label>
             <input
-              type="text"
+              type="password"
               id="passwordRenew"
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-            />
+              value={formData.passwordRenew}
+              onChange={handleChange} />
           </div>
         </div>
-      </form>,
+      </div>,
 
-      // 🔹 FOOTER
+      // 🔹 FOOTER (Botones separados)
       <div className="flex gap-x-4">
-        <button className="secondary-button" onClick={closeModal}>Cancelar</button>
-        <button className="primary-button">Registrar</button>
-
+        <button
+          className="secondary-button"
+          onClick={closeModal}
+        >
+          Cancelar
+        </button>
+        <button
+          className="primary-button"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? "Registrando..." : "Registrar"}
+        </button>
       </div>
     );
   };
 
   return (
     <TooltipCustom content="Registrar nuevo usuario" placement="top">
-      <button onClick={handleClick} className="primary-button"><IoPersonAddOutline /></button>
+      <button
+        onClick={() => {
+          // Resetear form al abrir si es necesario
+          setFormData({ name: "", email: "", role: "user", password: "", passwordRenew: "" });
+          renderModalContents();
+        }}
+        className="primary-button"
+      >
+        <IoPersonAddOutline />
+      </button>
     </TooltipCustom>
   );
-}
+};

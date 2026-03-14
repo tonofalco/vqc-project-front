@@ -3,50 +3,64 @@
 @tailwind utilities;
 
 
-h1 {
-  @apply text-3xl font-bold text-gray-800;
+@layer base {
+  /* Estilos globales para etiquetas HTML */
+  h1 {
+    @apply text-3xl font-bold text-gray-800;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold text-gray-800;
+  }
+
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  hr {
+    @apply my-1 border-gray-300 border mb-3;
+  }
+
+  button {
+    @apply transition-all hover:bg-blue-800 px-8 py-2 rounded-3xl text-slate-100 font-semibold uppercase tracking-wide shadow-md;
+  }
+
+  /* Agrupamos los inputs para limpiar el archivo */
+  input:not(.swal2-input)[type=text],
+  input:not(.swal2-input)[type=password], 
+  input:not(.swal2-input)[type=email], 
+  input:not(.swal2-input)[type=number], 
+  input:not(.swal2-input)[type=date], 
+  input:not(.swal2-input)[type=time],
+  select{
+    @apply w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500;
+  } 
+
+  label {
+    @apply block text-gray-700
+  }
 }
 
-h2 {
-  @apply text-2xl font-semibold text-gray-800;
-}
+@layer components {
+  /* Clases personalizadas reutilizables */
 
-h3 {
-  @apply text-lg font-semibold;
-}
+  .primary-button {
+    @apply bg-blue-500 hover:bg-blue-400;
+  }
 
-hr {
-  @apply my-1 border-gray-300 border mb-3;
-}
+  .secondary-button {
+    @apply bg-gray-500 hover:bg-gray-400;
+  }
 
-button {
-  @apply transition-all hover:bg-blue-800  px-8 py-2 rounded-3xl text-slate-100 font-semibold uppercase tracking-wide shadow-md;
-}
+  .edit-button {
+    @apply bg-green-800 hover:bg-green-700;
+  }
 
-input:not(.swal2-input)[type=text],input:not(.swal2-input)[type=password], input:not(.swal2-input)[type=email], input:not(.swal2-input)[type=number], input:not(.swal2-input)[type=date], input:not(.swal2-input)[type=time]  {
-  @apply w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500;
-}
+  .delete-button {
+    @apply bg-red-800 hover:bg-red-700;
+  }
 
-.card-option {
-    @apply transition-all hover:bg-blue-800  px-8 py-2 rounded-3xl text-gray-800 hover:text-slate-100 font-semibold uppercase tracking-wide shadow-md;
-}
-
-.primary-button {
-  @apply transition-all text-slate-100 bg-blue-500 hover:bg-blue-400   px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
-}
-
-.secondary-button {
-  @apply transition-all text-slate-100 bg-gray-500 hover:bg-gray-400  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
-}
-
-.edit-button {
-  @apply transition-all text-slate-100 bg-green-800 hover:bg-green-700   px-4 py-2 rounded-s-3xl font-semibold uppercase tracking-wide shadow-md;
-}
-
-.delete-button {
-  @apply transition-all text-slate-100 bg-red-800 hover:bg-red-700  px-4 py-2 rounded-e-3xl font-semibold uppercase tracking-wide shadow-md;
-}
-
-.close-button {
-  @apply transition-all text-slate-100 bg-red-700 hover:bg-red-600  px-4 py-2 rounded-xl font-semibold uppercase tracking-wide shadow-md;
+  .close-button {
+    @apply bg-red-700 hover:bg-red-600;
+  }
 }

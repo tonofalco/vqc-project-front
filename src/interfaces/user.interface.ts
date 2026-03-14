@@ -1,7 +1,14 @@
+export interface CreateUserDTO {
+  name: string;
+  email: string;
+  role: string;
+  password: string;
+}
+
 export interface User {
   uid: number;
-  email?: string;
-  name?: string;
-  isActive?: boolean;
+  name: string;
+  email: string;
   role: string;
 }
+

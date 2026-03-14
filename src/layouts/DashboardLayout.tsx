@@ -1,24 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "../stores";
-import { SideMenu } from "../components";
+import { useAuthStore } from "src/stores/index";
+import { SideMenu } from "src/components/index";
 import { IoMenu } from "react-icons/io5";
+import { authURL } from "src/enum/routesURL";
 
 export const DashboardLayout = () => {
-  const AuthStatus = useAuthStore((state) => state.status);
+  const status = useAuthStore((state) => state.status);
   const checkAuthStatus = useAuthStore((state) => state.checkAuthStatus);
 
   const [isOpen, setIsOpen] = useState(false);
 
-  if (AuthStatus === "pending") {
-    checkAuthStatus();
+  // ✅ Verificar auth solo una vez al montar el layout
+  useEffect(() => {
+    if (status === "pending") {
+      checkAuthStatus();
+    }
+  }, [status, checkAuthStatus]);
+
+  // ⏳ Loading mientras se valida el token
+  if (status === "pending") {
     return (
-      <div className="flex justify-center items-center h-screen">Loading...</div>
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
     );
   }
 
-  if (AuthStatus === "unauthenticated") {
-    return <Navigate to="/auth/login" />;
+  // 🔐 Token inválido → login
+  if (status === "unauthenticated") {
+    return <Navigate to={authURL.LOGIN} replace />;
   }
 
   return (
@@ -40,9 +51,9 @@ export const DashboardLayout = () => {
       {isOpen && (
         <>
           {/* Overlay */}
-          <div
+          <button
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/50 z-40"
+            className="fixed inset-0 bg-black/50 z-40 button-no-style"
           />
 
           {/* Drawer */}

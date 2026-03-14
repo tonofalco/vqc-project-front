@@ -4,7 +4,6 @@ import { TooltipCustom } from "../../shared/tooltip/TooltipCustom";
 import { useUser } from "../../../hooks";
 
 
-
 const TABLE_HEAD = ["Nombre", "Email", "Rol", "Acciones"];
 
 interface TravelTableProps {
@@ -16,11 +15,11 @@ interface TravelTableProps {
 
 export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: TravelTableProps) => {
 
-  const { handleSelectUser } = useUser();
+  const { handleSelectUser, handleDelete, loading } = useUser();
   // calcular rango de eventos para la página actual
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedEvents = events.slice(startIndex, endIndex);
+  const paginatedEvents = (events || []).slice(startIndex, endIndex);
 
   const tdClasses = "p-4 border-b border-blue-gray-50 max-w-[250px] break-words";
 
@@ -47,58 +46,52 @@ export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: Trave
           </tr>
         </thead>
         <tbody>
-          {events && events.length > 0 ? (
-            paginatedEvents.map(({ id, name, email, role }, index) => {
+          {paginatedEvents.length > 0 ? (
+            paginatedEvents.map((user, index) => {
+              // 🛡️ VALIDACIÓN CRÍTICA: Si 'user' es undefined, no renderizamos nada para esa fila
+              if (!user) return null;
 
-              const isLast = index === events.length - 1;
-              const classes = isLast
-                ? "p-4"
-                : "p-4 border-b border-blue-gray-50";
+              // Desestructuramos con valores por defecto y manejando posibles nombres de ID
+              const { id, _id, name, email, role } = user;
+              const userId = id || _id || `temp-${index}`; // Fallback para el ID
+
+              const isLast = index === paginatedEvents.length - 1;
+              const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={id}>
+                <tr key={userId}>
                   <td className={`${classes} ${tdClasses}`}>
-                    <Typography {...({} as any)}
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {name}
+                    <Typography {...({} as any)} variant="small" color="blue-gray" className="font-normal">
+                      {name || 'Sin nombre'}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
-                    <Typography {...({} as any)}
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {email}
+                    <Typography {...({} as any)} variant="small" color="blue-gray" className="font-normal">
+                      {email || 'Sin email'}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
-                    <Typography {...({} as any)}
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      {role}
+                    <Typography {...({} as any)} variant="small" color="blue-gray" className="font-normal">
+                      {role || 'user'}
                     </Typography>
                   </td>
                   <td className={`${classes} ${tdClasses}`}>
-                    <Typography {...({} as any)}
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal"
-                    >
-                      <span>
-                        <TooltipCustom content="Editar usuario" placement="top">
-                          <button data-tooltip-target="tooltip-default" className="edit-button me-2"  onClick={() => handleSelectUser({ uid: id, name, email, role, ok:true })}><IoPencilSharp /></button>
-                        </TooltipCustom>
-                        <TooltipCustom content="Eliminar usuario" placement="top">
-                          <button className="delete-button"><IoTrashOutline /></button>
-                        </TooltipCustom>
-                      </span>
-                    </Typography>
+                    <div className="flex gap-2">
+                      <TooltipCustom content="Editar usuario" placement="top">
+                        <button
+                          className="edit-button"
+                          onClick={() => handleSelectUser({ uid: userId, name, email, role, ok: true })}
+                        >
+                          <IoPencilSharp />
+                        </button>
+                      </TooltipCustom>
+                      <TooltipCustom content="Eliminar usuario" placement="top">
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDelete(userId, name)}
+                          disabled={loading}><IoTrashOutline /></button>
+                      </TooltipCustom>
+                    </div>
                   </td>
                 </tr>
               );

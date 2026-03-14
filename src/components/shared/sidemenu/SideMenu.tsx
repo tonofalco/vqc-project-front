@@ -69,7 +69,7 @@ export const SideMenu = ({ onClose }: { onClose?: () => void }) => {
 
       >
         <IoLogOutOutline className="w-6 h-6" />
-        <div className="ml-2 flex flex-col">
+        <div className="ml-2 flex flex-col ">
           <span className="text-lg text-slate-300 font-bold leading-5">Logout</span>
           <span className="text-sm text-slate-500 hidden md:block">Cerrar sesión</span>
         </div>

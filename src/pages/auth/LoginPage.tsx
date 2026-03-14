@@ -44,12 +44,12 @@ export const LoginPage = () => {
 
       <form onSubmit={onSubmit}>
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-600">Email</label>
+          <label htmlFor="username">Email</label>
           <input type="text" name="username" autoComplete="off" /> 
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-600">Contraseña</label>
+          <label htmlFor="password">Contraseña</label>
           <input type="password" name="password" autoComplete="off" />
         </div>
 
@@ -60,7 +60,8 @@ export const LoginPage = () => {
           </label>
         </div> */}
 
-        <button type="submit" className="bg-blue-500 ">Login </button>
+        <button type="submit" className="primary-button ">Login </button>
+
 
       </form>
     </>
