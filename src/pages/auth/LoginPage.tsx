@@ -1,36 +1,10 @@
 import vqgLogo from 'src/assets/logoBlanco.webp';
-import { useAuthStore, useModalStore } from 'src/stores/index';
-import { useNavigate } from 'react-router-dom';
-import { FormEvent } from 'react';
-import { routesURL } from 'src/enum/routesURL';
-
+import { useAuthLogin } from 'src/hooks';
 
 
 export const LoginPage = () => {
 
-  const navigate = useNavigate();
-
-  const loginUser = useAuthStore((state) => state.loginUser);
-  const { errorModal } = useModalStore();
-
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const { username, password } = event.target as typeof event.target & {
-      username: { value: string };
-      password: { value: string };
-    };
-
-    try {
-      await loginUser(username.value, password.value);
-      navigate(routesURL.DASHBOARD);
-    } catch (error) {
-      errorModal('Error', 'No se pudo iniciar sesión');
-      throw error;
-    }
-
-  }
+  const { handleSubmit } = useAuthLogin();
 
   return (
     <>
@@ -42,7 +16,7 @@ export const LoginPage = () => {
       <h2 className="text-3xl font-semibold mb-4 text-center">Iniciar sesión</h2>
       <h1 className="text-xl font-light mb-4 text-center">Software interno para viajes privado</h1>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="username">Email</label>
           <input type="text" name="username" autoComplete="off" /> 
@@ -53,15 +27,7 @@ export const LoginPage = () => {
           <input type="password" name="password" autoComplete="off" />
         </div>
 
-        {/* <div className="mb-4 flex items-center">
-          <input type="checkbox" name="remember" className="text-blue-500" />
-          <label htmlFor="remember" className="text-gray-600 ml-2">
-            Remember Me
-          </label>
-        </div> */}
-
         <button type="submit" className="primary-button ">Login </button>
-
 
       </form>
     </>

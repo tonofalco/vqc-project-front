@@ -1,16 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import vqgLogo from './../assets/vq_guerrero_logo.png';
-import { useAuthStore } from '../stores';
-import { SpinnerCircular } from 'spinners-react';
+import vqgLogo from 'src/assets/vq_guerrero_logo.png';
+import { useAuthStore } from 'src/stores';
 import { routesURL } from 'src/enum/routesURL';
+import { SpinnerCircular } from 'spinners-react';
 
 
 export const AuthLayout = () => {
 
   const AuthStatus = useAuthStore((state) => state.status);
   const checkAuthStatus = useAuthStore((state) => state.checkAuthStatus);
-
-  console.log('AuthStatus', AuthStatus)
 
   if (AuthStatus === 'pending') {
     checkAuthStatus();

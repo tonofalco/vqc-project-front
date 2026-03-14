@@ -1,41 +1,29 @@
 import { AxiosError } from "axios";
 import { vqcBackendApi } from "src/api/vqc-backend.api";
-
-
-export interface LoginResponse {
-  ok: boolean;
-  uid: number;
-  name: string;
-  email: string;
-  role: string;
-  token: string;
-}
-
+import { LoginRequest, LoginResponse } from "src/interfaces";
 
 
 export class AuthService {
-
-  static readonly login = async (email: string, password: string): Promise<LoginResponse> => {
-
+  // Inicio de sesión
+  static readonly login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
+    const { email, password } = loginRequest;
     try {
-      const { data } = await vqcBackendApi.post<LoginResponse>('/users', { email, password });
-      console.log('data', data)
+      const { data } = await vqcBackendApi.post<LoginResponse>('/users', { email, password }); 
       return data;
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log("error en servicio ", error.response?.data.errors);
         throw new Error(error.response?.data)
       }
-
       console.log(error)
       throw new Error('Error al iniciar sesión')
     }
-
   };
 
   static readonly checkStatus = async (): Promise<LoginResponse> => {
     try {
       const { data } = await vqcBackendApi.get<LoginResponse>('/users/renew');
+      console.log('data checkStatus', data)
       return data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -45,7 +33,7 @@ export class AuthService {
 
       console.log(error)
       throw new Error('Error al verificar el estado de autenticación')
-      
+
     }
   };
 
@@ -63,6 +51,7 @@ export class AuthService {
 
   static readonly createUser = async (event: LoginResponse): Promise<LoginResponse> => {
     try {
+      console.log('event', event)
       const { data } = await vqcBackendApi.post("/users/new", event);
       return data.event;
     } catch (error) {
@@ -74,16 +63,16 @@ export class AuthService {
   };
 
   static readonly updateUser = async (id: string, event: any): Promise<any> => {
-  try {
-    const { data } = await vqcBackendApi.put(`/users/${id}`, event);
-    return data; // O data.user dependiendo de cómo responda tu API
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      throw new Error(error.response?.data?.msg || "Error al actualizar usuario");
+    try {
+      const { data } = await vqcBackendApi.put(`/users/${id}`, event);
+      return data; // O data.user dependiendo de cómo responda tu API
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new Error(error.response?.data?.msg || "Error al actualizar usuario");
+      }
+      throw new Error("Error en la aplicación al actualizar");
     }
-    throw new Error("Error en la aplicación al actualizar");
-  }
-};
+  };
 
   static readonly deleteUser = async (id: string): Promise<void> => {
     try {

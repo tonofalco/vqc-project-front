@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from '../stores';
+import { useAuthStore } from 'src/stores/auth/auth.store';
 
 
 export const vqcBackendApi = axios.create({
@@ -9,7 +9,6 @@ export const vqcBackendApi = axios.create({
 // Interceptor de Petición
 vqcBackendApi.interceptors.request.use(
   (config) => {
-    console.log(' useAuthStore.getState()',  useAuthStore.getState().user?.uid)
     const token = useAuthStore.getState().token;
     if (token) {
       if (!config.headers) config.headers = new axios.AxiosHeaders(); // asegurarnos que headers existe

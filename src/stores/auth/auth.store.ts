@@ -1,5 +1,5 @@
 import { StateCreator, create } from "zustand";
-import type { User, AuthStatus } from "src/interfaces/index";
+import type { User, AuthStatus, LoginRequest } from "src/interfaces/index";
 import { AuthService } from "src/services/auth.service";
 import { devtools, persist } from "zustand/middleware";
 
@@ -8,7 +8,7 @@ export interface AuthState {
   token: string;
   user: User;
 
-  loginUser: (email: string, password: string) => Promise<void>;
+  loginUser: (loginRequest: LoginRequest) => Promise<void>;
   checkAuthStatus: () => Promise<void>;
   logoutUser: () => void;
 
@@ -19,12 +19,12 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   token: '',
   user: {} as User,
 
-
-  loginUser: async (email: string, password: string) => {
-
+  
+  loginUser: async (loginRequest: LoginRequest) => {
+    const { email, password } = loginRequest;
 
     try {
-      const { token, ...user } = await AuthService.login(email, password);
+      const { token, ...user } = await AuthService.login({email, password});
       set({ status: 'authorized', token, user });
 
     } catch (error) {

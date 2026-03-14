@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { LoginResponse, AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/services/auth.service';
+import { LoginResponse } from 'src/interfaces';
 
 interface UserState {
   users: LoginResponse[];
@@ -36,6 +37,7 @@ export const useUsersStore = create<UserState>()(
 
     addUser: async (newUser: any) => {
       set({ loading: true, error: null });
+      console.log('newUser', newUser)
       try {
         const createdUser = await AuthService.createUser(newUser);
         await get().fetchUsers();
