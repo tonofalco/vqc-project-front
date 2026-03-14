@@ -1,5 +1,5 @@
 import { StateCreator, create } from "zustand";
-import type { User, AuthStatus, LoginRequest } from "src/interfaces/index";
+import type { User, AuthStatus, LoginRequest, LoginResponse } from "src/interfaces";
 import { AuthService } from "src/services/auth.service";
 import { devtools, persist } from "zustand/middleware";
 
@@ -8,8 +8,8 @@ export interface AuthState {
   token: string;
   user: User;
 
-  loginUser: (loginRequest: LoginRequest) => Promise<void>;
-  checkAuthStatus: () => Promise<void>;
+  loginUser: (loginRequest: LoginRequest) => Promise<LoginResponse>;
+  checkAuthStatus: () => Promise<LoginResponse>;
   logoutUser: () => void;
 
 }
@@ -19,14 +19,13 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   token: '',
   user: {} as User,
 
-  
-  loginUser: async (loginRequest: LoginRequest) => {
-    const { email, password } = loginRequest;
-
+  // Función para iniciar sesión
+  loginUser: async (loginRequest: LoginRequest): Promise<LoginResponse> => {
     try {
-      const { token, ...user } = await AuthService.login({email, password});
+      const response = await AuthService.login(loginRequest);
+      const { token, ...user } = response;
       set({ status: 'authorized', token, user });
-
+      return response;
     } catch (error) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
       throw error instanceof Error
@@ -35,13 +34,16 @@ const storeApi: StateCreator<AuthState> = (set) => ({
     }
   },
 
-  checkAuthStatus: async () => {
+  checkAuthStatus: async (): Promise<LoginResponse> => {
     try {
-      const { token, ...user } = await AuthService.checkStatus();
+      const response = await AuthService.checkStatus();
+      const { token, ...user } = response;
       set({ status: 'authorized', token, user });
+      return response;
     } catch (error) {
       set({ status: 'unauthenticated', token: undefined, user: undefined });
       console.error('Auth status check failed:', error);
+      throw error;
     }
   },
 
