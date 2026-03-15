@@ -50,8 +50,6 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   logoutUser: () => {
     set({ status: 'unauthenticated', token: undefined, user: undefined });
   }
-
-
 });
 
 export const useAuthStore = create<AuthState>()(devtools(

@@ -20,6 +20,7 @@ export class AuthService {
     }
   };
 
+  // Verificación de estado de autenticación
   static readonly checkStatus = async (): Promise<LoginResponse> => {
     try {
       const { data } = await vqcBackendApi.get<LoginResponse>('/users/renew');
@@ -34,54 +35,6 @@ export class AuthService {
       console.log(error)
       throw new Error('Error al verificar el estado de autenticación')
 
-    }
-  };
-
-  static readonly getAllUsers = async (): Promise<LoginResponse[]> => {
-    try {
-      const { data } = await vqcBackendApi.get("/users");
-      return data.usuarios || data;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        throw new Error(error.response?.data?.msg || "Error al obtener usuarios en servicio");
-      }
-      throw new Error("Error al obtener usuarios en aplicativo");
-    }
-  };
-
-  static readonly createUser = async (event: LoginResponse): Promise<LoginResponse> => {
-    try {
-      console.log('event', event)
-      const { data } = await vqcBackendApi.post("/users/new", event);
-      return data.event;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        throw new Error(error.response?.data?.msg || "Error al crear usuario en servicio");
-      }
-      throw new Error("Error al crear usuario en aplicativo");
-    }
-  };
-
-  static readonly updateUser = async (id: string, event: any): Promise<any> => {
-    try {
-      const { data } = await vqcBackendApi.put(`/users/${id}`, event);
-      return data; // O data.user dependiendo de cómo responda tu API
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        throw new Error(error.response?.data?.msg || "Error al actualizar usuario");
-      }
-      throw new Error("Error en la aplicación al actualizar");
-    }
-  };
-
-  static readonly deleteUser = async (id: string): Promise<void> => {
-    try {
-      await vqcBackendApi.delete(`/users/${id}`);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        throw new Error(error.response?.data?.msg || "Error al eliminar usuario en servicio");
-      }
-      throw new Error("Error al eliminar usuario en aplicativo");
     }
   };
 

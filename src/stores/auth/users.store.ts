@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { AuthService } from 'src/services/auth.service';
-import { LoginResponse } from 'src/interfaces';
+import { LoginResponse, Usuario } from 'src/interfaces';
+import { UserService } from "src/services";
 
 interface UserState {
-  users: LoginResponse[];
+  users: Usuario[];
   loading: boolean;
   error: string | null;
   activeUser: LoginResponse | null;
@@ -24,65 +24,72 @@ export const useUsersStore = create<UserState>()(
     loading: false,
     error: null,
 
-
+    // Función para obtener todos los usuarios
     fetchUsers: async () => {
       set({ loading: true, error: null });
       try {
-        const users = await AuthService.getAllUsers();
+        const users = await UserService.getAllUsers();
         set({ users, loading: false });
-      } catch (error: any) {
-        set({ error: error.message, loading: false });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        set({ error: message, loading: false });
       }
     },
 
-    addUser: async (newUser: any) => {
+    // Función para agregar un nuevo usuario
+    addUser: async (newUser: Usuario) => {
       set({ loading: true, error: null });
-      console.log('newUser', newUser)
       try {
-        const createdUser = await AuthService.createUser(newUser);
+        const createdUser = await UserService.createUser(newUser);
         await get().fetchUsers();
         // Actualizamos la lista local añadiendo el nuevo usuario
         set((state) => ({
           users: [...state.users, createdUser],
           loading: false
         }));
-        return true; // Para saber que fue exitoso
-      } catch (error: any) {
-        set({ error: error.message, loading: false });
+        return true;
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        set({ error: message, loading: false });
         return false;
       }
     },
 
-    updateUser: async (id: string, userData: any) => {
+    // Actualización de usuario, recibe el ID y los datos a actualizar
+    updateUser: async (id: string, user: Usuario) => {
       set({ loading: true, error: null });
       try {
-        await AuthService.updateUser(id, userData);
+        await UserService.updateUser(id, user);
         await get().fetchUsers(); // Refrescar la tabla automáticamente
         set({ loading: false });
         return true;
-      } catch (error: any) {
-        set({ error: error.message, loading: false });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        set({ error: message, loading: false });
         return false;
       }
     },
 
+    // Función para eliminar un usuario por ID
     deleteUser: async (id: string) => {
       // Opcional: Podrías pedir confirmación aquí o en el componente
       set({ loading: true, error: null });
       try {
-        await AuthService.deleteUser(id);
+        await UserService.deleteUser(id);
 
         // Refrescamos la lista completa para que la tabla se actualice
         await get().fetchUsers();
 
         set({ loading: false });
         return true;
-      } catch (error: any) {
-        set({ error: error.message, loading: false });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        set({ error: message, loading: false });
         return false;
       }
     },
 
+    // Función para establecer el usuario activo (para edición)
     setActiveUser: (user: LoginResponse) => set({ activeUser: user }),
   }))
 );
