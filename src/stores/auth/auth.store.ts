@@ -1,12 +1,12 @@
 import { StateCreator, create } from "zustand";
-import type { User, AuthStatus, LoginRequest, LoginResponse } from "src/interfaces";
+import type { UserId, AuthStatus, LoginRequest, LoginResponse } from "src/interfaces";
 import { AuthService } from "src/services/auth.service";
 import { devtools, persist } from "zustand/middleware";
 
 export interface AuthState {
   status: AuthStatus;
   token: string;
-  user: User;
+  user: UserId;
 
   loginUser: (loginRequest: LoginRequest) => Promise<LoginResponse>;
   checkAuthStatus: () => Promise<LoginResponse>;
@@ -17,7 +17,7 @@ export interface AuthState {
 const storeApi: StateCreator<AuthState> = (set) => ({
   status: 'pending',
   token: '',
-  user: {} as User,
+  user: {} as UserId,
 
   // Función para iniciar sesión
   loginUser: async (loginRequest: LoginRequest): Promise<LoginResponse> => {
