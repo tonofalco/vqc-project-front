@@ -36,7 +36,6 @@ const handleSubmit = async () => {
     let success = false;
 
     if (activeUser) {
-      console.log('activeUser', activeUser)
       // 📝 MODO EDICIÓN
       // El ID puede venir como 'uid', 'id' o '_id' según tu hook useUser
       const id = activeUser.uid ;

@@ -9,11 +9,11 @@ interface UserState {
   error: string | null;
   activeUser: LoginResponse | null;
 
-  fetchUsers: () => Promise<void>;
-  addUser: (newUser: any) => any;
-  updateUser: (id: string, userData: any) => any
-  deleteUser: (id: string) => any;
-  setActiveUser: (user: any) => void;
+  fetchUsers: () => Promise<Usuario[]>;
+  addUser: (newUser: Usuario) => Promise<boolean>;
+  updateUser: (id: string, userData: Usuario) => Promise<boolean>;
+  deleteUser: (id: string) =>  Promise<boolean>;
+  setActiveUser: (user: LoginResponse | null) => void;
 
 }
 
@@ -25,19 +25,21 @@ export const useUsersStore = create<UserState>()(
     error: null,
 
     // Función para obtener todos los usuarios
-    fetchUsers: async () => {
+    fetchUsers: async (): Promise<Usuario[]> => {
       set({ loading: true, error: null });
       try {
         const users = await UserService.getAllUsers();
         set({ users, loading: false });
+        return users;
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         set({ error: message, loading: false });
+        throw error;
       }
     },
 
     // Función para agregar un nuevo usuario
-    addUser: async (newUser: Usuario) => {
+    addUser: async (newUser: Usuario): Promise<boolean> => {
       set({ loading: true, error: null });
       try {
         const createdUser = await UserService.createUser(newUser);
@@ -56,7 +58,7 @@ export const useUsersStore = create<UserState>()(
     },
 
     // Actualización de usuario, recibe el ID y los datos a actualizar
-    updateUser: async (id: string, user: Usuario) => {
+    updateUser: async (id: string, user: Usuario):  Promise<boolean> => {
       set({ loading: true, error: null });
       try {
         await UserService.updateUser(id, user);
@@ -90,6 +92,6 @@ export const useUsersStore = create<UserState>()(
     },
 
     // Función para establecer el usuario activo (para edición)
-    setActiveUser: (user: LoginResponse) => set({ activeUser: user }),
+    setActiveUser: (user: LoginResponse | null) => set({ activeUser: user }),
   }))
 );
