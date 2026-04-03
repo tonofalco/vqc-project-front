@@ -11,6 +11,7 @@ export * from './auth/users.store';
 
 export * from './modal/modal.store';
 export * from './modal/modalFom.store';
+export * from './modal/modalTemplate.store';
 
 
 export * from './landCalendar/landCalendar.store';

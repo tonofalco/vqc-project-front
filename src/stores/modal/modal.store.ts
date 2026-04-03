@@ -41,6 +41,8 @@ export const useModalStore = create<ModalStore>(() => ({
       title,
       text,
       showCancelButton: true,
+      confirmButtonText: "Confirmar", // 👈 Agregado
+    cancelButtonText: "Cancelar",   // 👈 Agregado
       customClass: {
         confirmButton: customClass.confirmButton,
         cancelButton: customClass.cancelButton,
