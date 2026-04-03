@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { LoginResponse, Usuario } from 'src/interfaces';
+import { LoginResponse, Usuario, UsuarioUpdate } from 'src/interfaces';
 import { UserService } from "src/services";
 
 interface UserState {
@@ -11,7 +11,7 @@ interface UserState {
 
   fetchUsers: () => Promise<Usuario[]>;
   addUser: (newUser: Usuario) => Promise<boolean>;
-  updateUser: (id: string, userData: Usuario) => Promise<boolean>;
+  updateUser: (id: string, userData: UsuarioUpdate) => Promise<boolean>;
   deleteUser: (id: string) =>  Promise<boolean>;
   setActiveUser: (user: LoginResponse | null) => void;
 
@@ -58,7 +58,7 @@ export const useUsersStore = create<UserState>()(
     },
 
     // Actualización de usuario, recibe el ID y los datos a actualizar
-    updateUser: async (id: string, user: Usuario):  Promise<boolean> => {
+    updateUser: async (id: string, user: UsuarioUpdate):  Promise<boolean> => {
       set({ loading: true, error: null });
       try {
         await UserService.updateUser(id, user);

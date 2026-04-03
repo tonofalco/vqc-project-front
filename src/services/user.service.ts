@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { vqcBackendApi } from "src/api/vqc-backend.api";
-import { Usuario } from "src/interfaces";
+import { Usuario, UsuarioUpdate } from "src/interfaces";
 
 
 export class UserService {
@@ -32,7 +32,7 @@ export class UserService {
   };
 
   // Actualizar un usuario existente
-  static readonly updateUser = async (id: string, user: Usuario): Promise<Usuario> => {
+  static readonly updateUser = async (id: string, user: UsuarioUpdate): Promise<UsuarioUpdate> => {
     try {
       const { data } = await vqcBackendApi.put(`/users/${id}`, user);
       return data; // O data.user dependiendo de cómo responda tu API

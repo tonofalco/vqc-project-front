@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useModalFormStore, useUsersStore } from "src/stores";
+import { useModalFormStore, useModalStore, useUsersStore } from "src/stores";
 import { TooltipCustom } from "src/components";
 import { IoPersonAddOutline } from "react-icons/io5";
 
 export const CreateNewUser = () => {
   const { openModal, closeModal, isOpen } = useModalFormStore();
   const { addUser, loading, activeUser, setActiveUser, updateUser } = useUsersStore();
+  const { errorModal } = useModalStore();
 
   // 1. Estado elevado al padre
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ export const CreateNewUser = () => {
     passwordRenew: ""
   });
 
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -25,10 +27,10 @@ export const CreateNewUser = () => {
     }));
   };
 
-const handleSubmit = async () => {
+  const handleSubmit = async () => {
     // Validaciones
     if (formData.password && formData.password !== formData.passwordRenew) {
-      alert("Las contraseñas no coinciden");
+      errorModal("Las contraseñas no coinciden");
       return;
     }
 
@@ -38,7 +40,7 @@ const handleSubmit = async () => {
     if (activeUser) {
       // 📝 MODO EDICIÓN
       // El ID puede venir como 'uid', 'id' o '_id' según tu hook useUser
-      const id = activeUser.uid ;
+      const id = activeUser.uid;
       success = await updateUser(id.toString(), dataToSend);
     } else {
       // 🆕 MODO CREACIÓN
@@ -72,11 +74,11 @@ const handleSubmit = async () => {
 
 
   useEffect(() => {
-  // Si hay un usuario activo y el modal aún está cerrado...
-  if (activeUser && !isOpen) {
-    renderModalContents(); // Esto ejecuta el openModal() con los datos ya cargados
-  }
-}, [activeUser]); // Se dispara cada vez que seleccionas a alguien en la tabla
+    // Si hay un usuario activo y el modal aún está cerrado...
+    if (activeUser && !isOpen) {
+      renderModalContents(); // Esto ejecuta el openModal() con los datos ya cargados
+    }
+  }, [activeUser]); // Se dispara cada vez que seleccionas a alguien en la tabla
 
   const renderModalContents = () => {
     const isEditing = !!activeUser;

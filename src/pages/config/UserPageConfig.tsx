@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { UsersTable, ModalForm } from 'src/components';
+import { UsersTable, TooltipCustom } from 'src/components';
 import { WhiteCard } from 'src/components/shared/cards/WhiteCard';
 import { useTablePaginationStore, useUsersStore } from 'src/stores';
-import { CreateNewUser } from 'src/components/config/form/CreateNewUser';
+import Modal from 'src/components/shared/modals/modalTemplate';
+import { IoPersonAddOutline } from 'react-icons/io5';
+import { useUser } from 'src/hooks';
 
 
 
@@ -11,15 +13,18 @@ export const UserPageConfig = () => {
   const { fetchUsers, users } = useUsersStore()
   const { usersItemsPerPage, usersCurrentPage, usersSetPage } = useTablePaginationStore();
 
+  const { handleCreateUserModal } = useUser();
 
-  // fetch inicial
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+// Se ejecuta UNA VEZ al montar el componente.
+useEffect(() => {
+  const init = async () => {
+    await fetchUsers();
+  };
+  init();
+}, []); 
 
-  // log cada vez que cambian los eventos
-  useEffect(() => {
-  }, [users]);
+// Se ejecuta cada vez que 'users' cambie 
+useEffect(() => {}, [users]);
 
   return (
     <>
@@ -28,10 +33,17 @@ export const UserPageConfig = () => {
       <hr />
 
       <WhiteCard centered>
+
         <div className='inline-flex gap-3'>
           <h2>Lista de usuarios</h2>
-          <CreateNewUser />
-          <ModalForm />
+          {/* <btn crear usuario /> */}
+          <TooltipCustom content="Registrar nuevo usuario" placement="top">
+            <button
+              onClick={() => handleCreateUserModal()}
+              className="primary-button"
+            ><IoPersonAddOutline />
+            </button>
+          </TooltipCustom>
         </div>
 
         <hr />
@@ -42,6 +54,8 @@ export const UserPageConfig = () => {
           setPage={usersSetPage}
           events={users} />
       </WhiteCard>
+      <Modal />
+
     </>
   )
 }

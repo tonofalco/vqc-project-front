@@ -1,21 +1,15 @@
 import { Card, Typography } from "@material-tailwind/react";
 import { IoPencilSharp, IoTrashOutline } from "react-icons/io5";
-import { TooltipCustom } from "../../shared/tooltip/TooltipCustom";
-import { useUser } from "../../../hooks";
+import { TooltipCustom } from "src/components/shared/tooltip/TooltipCustom.tsx";
+import { useUser } from "src/hooks";
 
 
 const TABLE_HEAD = ["Nombre", "Email", "Rol", "Acciones"];
 
-interface TravelTableProps {
-  currentPage: number;
-  itemsPerPage: number;
-  setPage: (page: number) => void;
-  events: Array<any>;
-}
 
-export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: TravelTableProps) => {
+export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: TableProps) => {
 
-  const { handleSelectUser, handleDelete, loading } = useUser();
+  const { handleUpdateUserModal, handleDelete, loading } = useUser();
   // calcular rango de eventos para la página actual
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -80,7 +74,7 @@ export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: Trave
                       <TooltipCustom content="Editar usuario" placement="top">
                         <button
                           className="edit-button"
-                          onClick={() => handleSelectUser({ uid: userId, name, email, role, ok: true })}
+                          onClick={() => handleUpdateUserModal({ uid: userId, name, email, role, ok: true })}
                         >
                           <IoPencilSharp />
                         </button>

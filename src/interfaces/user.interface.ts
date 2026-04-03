@@ -5,6 +5,12 @@ export interface Usuario {
   role: string;
 }
 
+export interface UsuarioUpdate {
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface UserId {
   uid: number;
   name: string;
