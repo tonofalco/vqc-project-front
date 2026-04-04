@@ -47,8 +47,8 @@ export const UpdateUserForm = () => {
         return;
       }
 
-      const {  ...dataToSend } = formData;
-      let success = await updateUser( String(activeUser.uid), dataToSend);
+      const { ...dataToSend } = formData;
+      let success = await updateUser(String(activeUser.uid), dataToSend);
 
       if (success) {
         successModal("Usuario actualizado correctamente");
@@ -97,21 +97,22 @@ export const UpdateUserForm = () => {
           </div>
         </div>
       </div>
-
-      <button
-        type="button"
-        className="primary-button"
-        onClick={submit}
-      >
-        Registrar
-      </button>
-      <button
-        type="button"
-        className="secondary-button"
-        onClick={closeModal}
-      >
-        Cancelar
-      </button>
+      <div className="flex justify-end gap-4">
+        <button
+          type="button"
+          className="primary-button"
+          onClick={submit}
+        >
+          Registrar
+        </button>
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={closeModal}
+        >
+          Cancelar
+        </button>
+      </div>
     </form>
   )
 }

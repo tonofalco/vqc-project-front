@@ -1,5 +1,5 @@
 
-interface TableProps {
+export interface TableProps {
   currentPage: number;
   itemsPerPage: number;
   setPage: (page: number) => void;

@@ -17,8 +17,8 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { title: 'Dashboard', subTitle: 'Visualizar data', href: '/dashboard', Icon: IoSpeedometerOutline },
   { title: 'Cotizacion', subTitle: 'Cacular rutas', href: '/dashboard/cotizacion', Icon: IoMapOutline },
-  { title: 'Calendario', subTitle: 'viajes terrestres', href: '/dashboard/person', Icon: IoBus },
-  { title: 'Calendario', subTitle: 'Viajes Aereos', href: '/dashboard/tasks', Icon: IoAirplaneOutline },
+  { title: 'Calendario', subTitle: 'viajes terrestres', href: '/dashboard/viajes-terrestres', Icon: IoBus },
+  { title: 'Calendario', subTitle: 'Viajes Aereos', href: '/dashboard/viajes-aereos', Icon: IoAirplaneOutline },
   { title: 'Configuracion', subTitle: 'Manipular data', href: '/dashboard/configuracion', Icon: IoSettingsOutline },
 ];
 

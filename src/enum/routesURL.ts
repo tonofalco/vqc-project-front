@@ -9,6 +9,8 @@ export enum authURL{
 export enum routesURL{
   DASHBOARD = '/dashboard',
   QUOTE = '/dashboard/cotizacion',
+  AIR_TRAVELS = '/dashboard/viajes-aereos',
+  LAND_TRAVELS = '/dashboard/viajes-terrestres',
   CONFIG = '/dashboard/configuracion',
   CONFIG_USERS = '/dashboard/configuracion/usuarios',
   CONFIG_FIRST_DAY = '/dashboard/configuracion/primer-dia',

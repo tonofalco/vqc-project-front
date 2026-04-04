@@ -1,6 +1,8 @@
 //Request - Authentication request sent to the backend
 //Response - Authentication response received from the backend
 
+export type AuthStatus = 'authorized' | 'unauthenticated' | 'pending';
+
 export interface LoginRequest {
   email: string;
   password: string;

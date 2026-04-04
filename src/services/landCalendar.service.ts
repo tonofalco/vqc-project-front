@@ -1,6 +1,6 @@
 
 import { AxiosError } from "axios";
-import { vqcBackendApi } from "../api/vqc-backend.api";
+import { vqcBackendApi } from "src/api/vqc-backend.api";
 
 export interface EarthEvent {
   id?: string;

@@ -2,6 +2,7 @@ import { Card, Typography } from "@material-tailwind/react";
 import { IoPencilSharp, IoTrashOutline } from "react-icons/io5";
 import { TooltipCustom } from "src/components/shared/tooltip/TooltipCustom.tsx";
 import { useUser } from "src/hooks";
+import { TableProps } from "src/interfaces";
 
 
 const TABLE_HEAD = ["Nombre", "Email", "Rol", "Acciones"];
@@ -100,7 +101,7 @@ export const UsersTable = ({ currentPage, itemsPerPage, setPage, events }: Table
         </tbody>
       </table>
 
-      <div className="flex justify-start lg:justify-center gap-2 mt-4 mb-4">
+      <div className="flex justify-start gap-2 mt-4 mb-4 ms-4 lg:ms-0 lg:justify-center">
         {Array.from({ length: Math.ceil(events.length / itemsPerPage) }, (_, i) => (
           <button
             key={i}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { GeneralDashboard, LandTravelsDashboard, AirTravelsDashboard } from '../../components';
+import { GeneralDashboard, LandTravelsDashboard, AirTravelsDashboard } from 'src/components';
 
 import { Tabs, TabsHeader, TabsBody, Tab, TabPanel } from "@material-tailwind/react";
 

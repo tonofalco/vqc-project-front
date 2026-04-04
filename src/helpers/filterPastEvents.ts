@@ -1,4 +1,4 @@
-import { useAuthStore } from "../stores";
+import { useAuthStore } from "src/stores";
 
 
 export const filterPastEvents = <T extends Record<string, any>>(

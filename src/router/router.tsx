@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { Root } from '../Root';
 import { AuthLayout, DashboardLayout } from '../layouts';
-import { Dashboard, JiraPage, LoginPage, PersonPage, CotizacionPage, ConfigPage, UserPageConfig, FirstDayPageConfig, ExtraDayPageConfig} from '../pages';
+import { Dashboard, LoginPage, CotizacionPage, ConfigPage, UserPageConfig, FirstDayPageConfig, ExtraDayPageConfig, ViajesTerrestresPage, ViajesAereosPage } from '../pages';
 import { authURL, routesURL } from '../enum/routesURL';
 
 
@@ -26,16 +26,12 @@ export const router = createBrowserRouter([
             element: <CotizacionPage />
           },
           {
-            path: 'person',
-            element: <PersonPage />
+            path: routesURL.LAND_TRAVELS,
+            element: <ViajesTerrestresPage />
           },
           {
-            path: 'tasks',
-            element: <JiraPage />
-          },
-            {
-            path: 'usuarios',
-            element: <UserPageConfig />
+            path: routesURL.AIR_TRAVELS,
+            element: <ViajesAereosPage />
           },
           {
             path: routesURL.CONFIG,
@@ -49,7 +45,7 @@ export const router = createBrowserRouter([
             path: routesURL.CONFIG_FIRST_DAY,
             element: <FirstDayPageConfig />,
           },
-            {
+          {
             path: routesURL.CONFIG_EXTRA_DAY,
             element: <ExtraDayPageConfig />,
           },

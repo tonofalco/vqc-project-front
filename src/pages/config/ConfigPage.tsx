@@ -1,9 +1,9 @@
 import { IconType } from 'react-icons';
 import { IoIdCardOutline, IoCalendarNumberOutline, IoCalendarOutline   } from 'react-icons/io5';
 
-import { WhiteCard } from '../../components/shared/cards/WhiteCard';
+import { WhiteCard } from 'src/components';
 import { useNavigate } from 'react-router-dom';
-import { routesURL } from '../../enum/routesURL';
+import { routesURL } from 'src/enum';
 
 interface SubMenuItem {
   title: string;
