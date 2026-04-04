@@ -63,4 +63,13 @@
   .close-button {
     @apply bg-red-700 hover:bg-red-600;
   }
+
+  .background-button {
+    /* Quitamos estilos de botón tradicional */
+    @apply bg-transparent border-none p-0 m-0 shadow-none normal-case rounded-none;
+    
+    /* Forzamos a que el hover mantenga el color que tú quieras */
+    /* Usamos ! para asegurar que gane la batalla de especificidad */
+    @apply hover:!bg-black/50 transition-none; 
+  }
 }

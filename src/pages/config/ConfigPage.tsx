@@ -32,12 +32,12 @@ export const ConfigPage = () => {
 
     
       <WhiteCard centered>
-        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 p-4 ">
           {SubMenuItems.map(({ title, href, Icon }) => (
             <button
               key={href}
               onClick={() => navigate(href)}
-              className="card-option flex flex-col items-center justify-center"
+              className="card-option flex flex-col items-center justify-center text-gray-700 hover:text-slate-100"
             >
               <Icon className="text-5xl text-blue-500 mb-2" />
               <h3>{title}</h3>

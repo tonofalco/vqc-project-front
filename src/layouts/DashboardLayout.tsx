@@ -53,7 +53,7 @@ export const DashboardLayout = () => {
           {/* Overlay */}
           <button
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/50 z-40 button-no-style"
+            className="fixed inset-0 bg-black/50 z-40 background-button"
           />
 
           {/* Drawer */}
