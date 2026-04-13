@@ -10,6 +10,7 @@ interface PaginationEvents {
   myAirCurrentPage: number;
   usersCurrentPage: number;
   extraDayCurrentPage: number;
+  firstDayCurrentPage: number;
 
   landItemsPerPage: number;
   airItemsPerPage: number;
@@ -17,6 +18,7 @@ interface PaginationEvents {
   myAirItemsPerPage: number;
   usersItemsPerPage: number;
   extraDayItemsPerPage: number;
+  firstDayItemsPerPage: number;
 
 
   landSetPage: (page: number) => void;
@@ -25,6 +27,7 @@ interface PaginationEvents {
   myAirSetPage: (page: number) => void;
   usersSetPage: (page: number) => void;
   extraDaySetPage: (page: number) => void;
+  firstDaySetPage: (page: number) => void;
 }
 
 export const useTablePaginationStore = create<PaginationEvents>()(
@@ -36,6 +39,7 @@ export const useTablePaginationStore = create<PaginationEvents>()(
     myAirCurrentPage: 1,
     usersCurrentPage: 1,
     extraDayCurrentPage: 1,
+    firstDayCurrentPage: 1,
 
     landItemsPerPage: 10,
     airItemsPerPage: 10,
@@ -43,6 +47,7 @@ export const useTablePaginationStore = create<PaginationEvents>()(
     myAirItemsPerPage: 10,
     usersItemsPerPage: 10,
     extraDayItemsPerPage: 10,
+    firstDayItemsPerPage: 10,
 
     landSetPage: (page: number) => set({ landCurrentPage: page }),
     airSetPage: (page: number) => set({ airCurrentPage: page }),
@@ -50,5 +55,6 @@ export const useTablePaginationStore = create<PaginationEvents>()(
     myAirSetPage: (page: number) => set({ myAirCurrentPage: page }),
     usersSetPage: (page: number) => set({ usersCurrentPage: page }),
     extraDaySetPage: (page: number) => set({ extraDayCurrentPage: page }),
+    firstDaySetPage: (page: number) => set({ firstDayCurrentPage: page }),
   }))
 );

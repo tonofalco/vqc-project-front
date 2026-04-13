@@ -48,12 +48,13 @@ export const DashboardLayout = () => {
       </button>
 
       {/* Sidebar Mobile */}
-      {isOpen && (
+      {
+      isOpen && (
         <>
           {/* Overlay */}
           <button
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/50 z-40 background-button"
+            className="fixed inset-0 bg-black/50 z-20 background-button"
           />
 
           {/* Drawer */}
@@ -61,7 +62,8 @@ export const DashboardLayout = () => {
             <SideMenu onClose={() => setIsOpen(false)} />
           </div>
         </>
-      )}
+      )
+      }
 
       {/* Contenido scrollable */}
       <div className="flex-1 overflow-y-auto p-4 bg-slate-200">

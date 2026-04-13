@@ -5,6 +5,7 @@ export * from './auth/users.store';
 export * from './landCalendar/landCalendar.store';
 
 export * from './config/extraDay.store';
+export * from './config/firstDay.store';
 
 export * from './modal/modalSweetalert2.store';
 export * from './modal/modalTemplate.store';

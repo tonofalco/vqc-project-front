@@ -103,7 +103,7 @@ export const UpdateUserForm = () => {
           className="primary-button"
           onClick={submit}
         >
-          Registrar
+          Actualizar
         </button>
         <button
           type="button"
