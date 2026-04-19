@@ -31,7 +31,9 @@
   input:not(.swal2-input)[type=email], 
   input:not(.swal2-input)[type=number], 
   input:not(.swal2-input)[type=date], 
+  input:not(.swal2-input)[type=datetime-local], 
   input:not(.swal2-input)[type=time],
+  textarea:not(.swal2-textarea),
   select{
     @apply w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500;
   } 
@@ -60,8 +62,16 @@
     @apply bg-red-800 hover:bg-red-700;
   }
 
+  .delete-button-form {
+    @apply hover:bg-red-500;
+  }
+
   .close-button {
     @apply bg-red-700 hover:bg-red-600;
+  }
+
+  .header-tab-button {
+    @apply bg-transparent  shadow-none rounded-none flex-1 py-4 font-medium text-base transition-all duration-300 whitespace-nowrap border-b-2 hover:bg-transparent ;
   }
 
   .background-button {

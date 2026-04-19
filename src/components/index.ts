@@ -18,6 +18,7 @@ export * from './config/form/UpdateExtraDayForm';
 export * from './config/form/UpdateFirstDayForm';
 
 export * from './dashboard/GeneralDashboard';
+export * from './calendar';
 export * from './dashboard/LandTravelsDashboard';
 export * from './dashboard/AirTravelsDashboard';
 

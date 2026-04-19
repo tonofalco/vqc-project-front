@@ -2,7 +2,7 @@
 export * from './auth/auth.store';
 export * from './auth/users.store';
 
-export * from './landCalendar/landCalendar.store';
+export * from './calendar/earthEvents.store';
 
 export * from './config/extraDay.store';
 export * from './config/firstDay.store';

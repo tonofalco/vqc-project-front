@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import { WhiteCard } from "../shared/cards/WhiteCard"
-import { useEarthEventStore, useTablePaginationStore } from "src/stores";
+import { useEarthEventsStore, useTablePaginationStore } from "src/stores";
 import { MyTravelsTable } from "./table/MyTravelsTable";
 
 
 
 export const GeneralDashboard = () => {
 
-  const { events, fetchEvents } = useEarthEventStore();
+  const { earthEvents, fetchEarthEvents } = useEarthEventsStore();
   const { myLandItemsPerPage, myLandCurrentPage, myLandSetPage } = useTablePaginationStore();
 
   // fetch inicial
   useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
+    fetchEarthEvents();
+  }, [fetchEarthEvents]);
 
   // log cada vez que cambian los eventos
   useEffect(() => {
-  }, [events]);
+  }, [earthEvents]);
 
 
   return (
@@ -31,7 +31,7 @@ export const GeneralDashboard = () => {
           currentPage={myLandCurrentPage}
           itemsPerPage={myLandItemsPerPage}
           setPage={myLandSetPage}
-          events={events} />
+          events={earthEvents} />
       </WhiteCard>
 
       <WhiteCard centered className="min-w-0">
