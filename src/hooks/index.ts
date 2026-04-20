@@ -1,7 +1,9 @@
-export * from './useAuthLogin';
+export * from './auth/useAuthLogin';
 
-export * from './useModal';
-export * from './useUsers';
-export * from './useExtraDay';
-export * from './useFirstDay';
-export * from './useEarthEvent';
+export * from './calendar/useEarthEvent';
+
+export * from './config/useUsers';
+export * from './config/useExtraDay';
+export * from './config/useFirstDay';
+
+export * from './shared/useModal';

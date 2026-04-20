@@ -1,6 +1,6 @@
 
 import { UpdateFirstDayForm } from "src/components";
-import { useModalStore, useModalTemplateStore, useFirstDayStore } from "../stores";
+import { useModalTemplateStore, useFirstDayStore } from "../../stores";
 
 
 export const useFirstDay = () => {
@@ -9,7 +9,6 @@ export const useFirstDay = () => {
   const setActiveFirstDay = useFirstDayStore((state) => state.setActiveFirstDay);
 
   const { openModal } = useModalTemplateStore();
-  const { successModal } = useModalStore();
 
 
   // manejar la apertura del modal para actualizar un costo del primer día existente

@@ -9,7 +9,7 @@ import Modal from 'src/components/shared/modals/modalTemplate';
 
 export const ViajesTerrestresPage = () => {
   const { fetchEarthEvents } = useEarthEventsStore();
-  const { handleCreateEarthEventModal } = useEarthEvent();
+  const { handleCreateEarthEventModal  } = useEarthEvent();
 
   // Se ejecuta UNA VEZ al montar el componente.
   useEffect(() => {
@@ -31,7 +31,7 @@ export const ViajesTerrestresPage = () => {
       <hr />
 
       <WhiteCard centered>
-        <EarthEventsCalendar />
+          <EarthEventsCalendar />
       </WhiteCard>
       <Modal />
     </>

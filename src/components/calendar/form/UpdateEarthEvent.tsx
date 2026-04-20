@@ -2,169 +2,78 @@
 import { useEffect, useState } from "react";
 import { useModalStore, useModalTemplateStore, useEarthEventsStore, useAuthStore } from "src/stores";
 import { useEarthEvent } from "src/hooks";
+import { EarthEventFormData } from "src/interfaces";
+import { getInputClassName } from "src/helpers";
 
 export const UpdateEarthEvent = () => {
   const { errorModal, successModal } = useModalStore();
   const { closeModal } = useModalTemplateStore();
   const { updateEarthEvent, activeEarthEvent, setActiveEarthEvent, loading } = useEarthEventsStore();
   const { user } = useAuthStore();
-  const { handleDelete } = useEarthEvent();
 
-  // Validar si el usuario actual es el propietario del evento
+  const [emptyFields, setEmptyFields] = useState<Set<keyof EarthEventFormData>>(new Set());
+
   const isOwner = activeEarthEvent && String(user.uid) === activeEarthEvent?.userId;
 
-  const [formData, setFormData] = useState({
-    transportNumber: "",
-    transport: "",
-    seats: "",
-    nameClient: "",
-    phone: "",
-    departure: "",
-    destination: "",
-    price: "",
-    advance: "",
-    start: "",
-    end: "",
-    status: "pendiente",
-    notes: ""
-  });
-
-  // Convertir timestamp a formato datetime-local (hora local)
-  const convertTimestampToDatetimeLocal = (timestamp: string | number): string => {
-    try {
-      let date: Date;
-      
-      // Si es string ISO (contiene T y Z)
-      if (typeof timestamp === "string" && timestamp.includes('T') && timestamp.includes('Z')) {
-        // Es un string ISO en UTC, parsearlo directamente
-        date = new Date(timestamp);
-      } else if (typeof timestamp === "string") {
-        // Intentar parsear como número
-        const ms = Number.parseInt(timestamp, 10);
-        if (Number.isNaN(ms)) {
-          console.warn("No se pudo parsear el timestamp:", timestamp);
-          return "";
-        }
-        // Si es menor a 10 dígitos, probablemente es en segundos
-        date = ms < 10000000000 ? new Date(ms * 1000) : new Date(ms);
-      } else {
-        // Es un número (milisegundos o segundos)
-        date = timestamp < 10000000000 ? new Date(timestamp * 1000) : new Date(timestamp);
-      }
-      
-      // Validar que la fecha sea válida
-      if (Number.isNaN(date.getTime())) {
-        console.warn("Fecha inválida:", timestamp);
-        return "";
-      }
-      
-      // Crear la cadena en hora local en lugar de UTC
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      
-      return `${year}-${month}-${day}T${hours}:${minutes}`;
-    } catch (error) {
-      console.error("Error al convertir timestamp:", timestamp, error);
-      return "";
-    }
-  };
-
-  // Convertir datetime-local a timestamp (interpretando como hora local)
-  const convertDatetimeLocalToTimestamp = (dateTimeLocal: string): number => {
-    const [datePart, timePart] = dateTimeLocal.split('T');
-    const [year, month, day] = datePart.split('-').map(Number);
-    const [hours, minutes] = timePart.split(':').map(Number);
-    
-    // Crear fecha interpretando como hora local
-    const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
-    return date.getTime();
-  };
-
-  // Obtener la fecha y hora actual en formato datetime-local
-  const getCurrentDatetimeLocal = (): string => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+  const {
+    formData,
+    setFormData,
+    handleChange,
+    getBalance,
+    validateFormData,
+    getPreparedData,
+    getCurrentDatetimeLocal,
+    convertTimestampToDatetimeLocal,
+    getEmptyRequiredFields,
+    handleDelete
+  } = useEarthEvent();
 
   // Cargar datos del evento activo
   useEffect(() => {
     if (activeEarthEvent) {
       setFormData({
-        transportNumber: activeEarthEvent.transportNumber || "",
-        transport: activeEarthEvent.transport || "",
-        seats: activeEarthEvent.seats || "",
-        nameClient: activeEarthEvent.nameClient || "",
-        phone: activeEarthEvent.phone || "",
-        departure: activeEarthEvent.departure || "",
-        destination: activeEarthEvent.destination || "",
-        price: String(activeEarthEvent.price) || "",
-        advance: String(activeEarthEvent.advance) || "",
+        transportNumber: String(activeEarthEvent.transportNumber || ""),
+        transport: String(activeEarthEvent.transport || ""),
+        seats: String(activeEarthEvent.seats || ""),
+        nameClient: String(activeEarthEvent.nameClient || ""),
+        phone: String(activeEarthEvent.phone || ""),
+        departure: String(activeEarthEvent.departure || ""),
+        destination: String(activeEarthEvent.destination || ""),
+        price: String(activeEarthEvent.price || ""),
+        advance: String(activeEarthEvent.advance || ""),
         start: convertTimestampToDatetimeLocal(activeEarthEvent.start),
         end: convertTimestampToDatetimeLocal(activeEarthEvent.end),
-        status: activeEarthEvent.status || "pendiente",
-        notes: activeEarthEvent.notes || ""
+        title: String(activeEarthEvent.title || ""),
+        status: String(activeEarthEvent.status || "pendiente"),
+        notes: String(activeEarthEvent.notes || "")
       });
     }
   }, [activeEarthEvent]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.id]: e.target.value
-    }));
-  };
-
-  const getBalance = () => {
-    const price = formData.price ? Number.parseFloat(formData.price as any) : 0;
-    const advance = formData.advance ? Number.parseFloat(formData.advance as any) : 0;
-    return price - advance;
-  };
-
   const submit = async () => {
-    // Validaciones básicas
-    if (!formData.transport || !formData.nameClient || !formData.departure || !formData.destination) {
-      errorModal("Por favor completa los campos obligatorios");
+    const empty = getEmptyRequiredFields();
+    setEmptyFields(empty);
+
+    if (!validateFormData() || !activeEarthEvent || empty.size > 0) {
       return;
     }
 
-    if (getBalance() < 0) {
-      errorModal("El anticipo no puede ser mayor al precio");
-      return;
-    }
+    const success = await updateEarthEvent(activeEarthEvent.id, getPreparedData() as any);
 
-    if (activeEarthEvent) {
-      const success = await updateEarthEvent(activeEarthEvent.id, {
-        ...formData,
-        price: formData.price ? Number.parseFloat(formData.price as any) : 0,
-        advance: formData.advance ? Number.parseFloat(formData.advance as any) : 0,
-        start: convertDatetimeLocalToTimestamp(formData.start),
-        end: convertDatetimeLocalToTimestamp(formData.end),
-      });
-
-      if (success) {
-        successModal("Evento terrestre actualizado correctamente");
-        closeModal();
-        setActiveEarthEvent(null);
-      } else {
-        errorModal("Error al actualizar el evento");
-      }
+    if (success) {
+      successModal("Evento terrestre actualizado correctamente");
+      closeModal();
+      setActiveEarthEvent(null);
+    } else {
+      errorModal("Error al actualizar el evento");
     }
   };
 
   return (
     <form className="flex flex-col gap-4">
-      <h1 className="text-center">Actualizar Evento Terrestre</h1>
+      <h1 className="text-center">Actualizar Evento Terrestre - Sencillo</h1>
+      <h2 className="text-center">Evento creado por {activeEarthEvent?.user?.name}</h2>
+
       <hr />
 
       <div className="mt-3 mb-5">
@@ -178,6 +87,7 @@ export const UpdateEarthEvent = () => {
               id="transportNumber"
               value={formData.transportNumber}
               onChange={handleChange}
+              className={getInputClassName('transportNumber', emptyFields)}
             />
           </div>
 
@@ -189,6 +99,7 @@ export const UpdateEarthEvent = () => {
               value={formData.transport}
               onChange={handleChange}
               placeholder="Ej: Bus, Toyota Van"
+              className={getInputClassName('transport', emptyFields)}
             />
           </div>
 
@@ -199,6 +110,7 @@ export const UpdateEarthEvent = () => {
               id="seats"
               value={formData.seats}
               onChange={handleChange}
+              className={getInputClassName('seats', emptyFields)}
             />
           </div>
 
@@ -215,6 +127,7 @@ export const UpdateEarthEvent = () => {
               value={formData.nameClient}
               onChange={handleChange}
               placeholder="Ingresa el nombre del cliente"
+              className={getInputClassName('nameClient', emptyFields)}
             />
           </div>
 
@@ -225,6 +138,7 @@ export const UpdateEarthEvent = () => {
               id="phone"
               value={formData.phone}
               onChange={handleChange}
+              className={getInputClassName('phone', emptyFields)}
               placeholder="Ingresa el teléfono del cliente"
             />
           </div>
@@ -237,6 +151,7 @@ export const UpdateEarthEvent = () => {
               value={formData.departure}
               onChange={handleChange}
               placeholder="Ej: Chilpancingo, Acapulco"
+              className={getInputClassName('departure', emptyFields)}
             />
           </div>
 
@@ -248,6 +163,7 @@ export const UpdateEarthEvent = () => {
               value={formData.destination}
               onChange={handleChange}
               placeholder="Ej: Ciudad de México"
+              className={getInputClassName('destination', emptyFields)}
             />
           </div>
 
@@ -259,6 +175,7 @@ export const UpdateEarthEvent = () => {
               value={formData.start}
               onChange={handleChange}
               min={getCurrentDatetimeLocal()}
+              className={getInputClassName('start', emptyFields)}
             />
           </div>
 
@@ -270,6 +187,7 @@ export const UpdateEarthEvent = () => {
               value={formData.end}
               onChange={handleChange}
               min={getCurrentDatetimeLocal()}
+              className={getInputClassName('end', emptyFields)}
             />
           </div>
 
@@ -289,6 +207,7 @@ export const UpdateEarthEvent = () => {
               placeholder="0.00"
               min="0"
               step="0.01"
+              className={getInputClassName('price', emptyFields)}
             />
           </div>
 
@@ -302,6 +221,7 @@ export const UpdateEarthEvent = () => {
               placeholder="0.00"
               min="0"
               step="0.01"
+              className={getInputClassName('advance', emptyFields)}
             />
           </div>
 

@@ -1,6 +1,7 @@
-export *  from './auth.service';
-export *  from './user.service';
-export * from './landCalendar.service';
-export * from './extraDay.service';
-export * from './firstDay.service';
-export * from './earthEvents.service';
+export *  from './auth/auth.service';
+
+export * from './calendar/earthEvents.service';
+
+export * from './config/firstDay.service';
+export * from './config/extraDay.service';
+export *  from './config/user.service';

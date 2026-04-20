@@ -1,7 +1,10 @@
-export * from './auth.interface';
-export * from './user.interface';
-export * from './table.interface';
-export * from './extraDay.interface';
-export * from './firstDay.interface';
-export * from './earthEvents.interface';
+export * from './shared/table.interface';
+
+export * from './auth/auth.interface';
+
+export * from './calendar/earthEvents.interface';
+
+export * from './config/user.interface';
+export * from './config/extraDay.interface';
+export * from './config/firstDay.interface';
 

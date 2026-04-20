@@ -1,6 +1,6 @@
 import { StateCreator, create } from "zustand";
 import type { UserId, AuthStatus, LoginRequest, LoginResponse } from "src/interfaces";
-import { AuthService } from "src/services/auth.service";
+import { AuthService } from "src/services/auth/auth.service";
 import { devtools, persist } from "zustand/middleware";
 
 export interface AuthState {

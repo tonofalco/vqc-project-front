@@ -1,11 +1,11 @@
 import { AxiosError } from "axios";
 import { vqcBackendApi } from "src/api/vqc-backend.api";
-import { EarthEvent, EarthEventCreate, EarthEventUpdate } from "src/interfaces";
+import { EarthEventGetData, EarthEventRequest } from "src/interfaces";
 
 
 export class EarthEventsService {
   // Obtener todos los viajes terrestres
-  static readonly getAllEarthEvents = async (): Promise<EarthEvent[]> => {
+  static readonly getAllEarthEvents = async (): Promise<EarthEventGetData[]> => {
     try {
       const { data } = await vqcBackendApi.get("/earthEvents");
       return data.eventos;
@@ -18,7 +18,7 @@ export class EarthEventsService {
   };
 
   // Crear un nuevo viaje terrestre
-  static readonly createEarthEvent = async (earthEvent: EarthEventCreate): Promise<EarthEvent> => {
+  static readonly createEarthEvent = async (earthEvent: EarthEventRequest): Promise<EarthEventGetData> => {
     try {
       const { data } = await vqcBackendApi.post("/earthEvents", earthEvent);
       return data.evento;
@@ -31,7 +31,7 @@ export class EarthEventsService {
   };
 
   // Actualizar un viaje terrestre existente
-  static readonly updateEarthEvent = async (id: number, earthEvent: EarthEventUpdate): Promise<EarthEvent> => {
+  static readonly updateEarthEvent = async (id: number, earthEvent: EarthEventRequest): Promise<EarthEventGetData> => {
     try {
       const { data } = await vqcBackendApi.put(`/earthEvents/${id}`, earthEvent);
       return data.evento;

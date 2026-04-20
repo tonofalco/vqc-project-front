@@ -1,19 +1,19 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { EarthEvent, EarthEventCreate, EarthEventUpdate } from 'src/interfaces';
+import { EarthEventGetData, EarthEventRequest } from 'src/interfaces';
 import { EarthEventsService } from "src/services";
 
 interface EarthEventsState {
-  earthEvents: EarthEvent[];
+  earthEvents: EarthEventGetData[];
   loading: boolean;
   error: string | null;
-  activeEarthEvent: EarthEvent | null;
+  activeEarthEvent: EarthEventGetData | null;
 
-  fetchEarthEvents: () => Promise<EarthEvent[]>;
-  addEarthEvent: (newEarthEvent: EarthEventCreate) => Promise<boolean>;
-  updateEarthEvent: (id: number, earthEventData: EarthEventUpdate) => Promise<boolean>;
+  fetchEarthEvents: () => Promise<EarthEventGetData[]>;
+  addEarthEvent: (newEarthEvent: EarthEventRequest) => Promise<boolean>;
+  updateEarthEvent: (id: number, earthEventData: EarthEventRequest) => Promise<boolean>;
   deleteEarthEvent: (id: number) => Promise<boolean>;
-  setActiveEarthEvent: (earthEvent: EarthEvent | null) => void;
+  setActiveEarthEvent: (earthEvent: EarthEventGetData | null) => void;
 }
 
 export const useEarthEventsStore = create<EarthEventsState>()(
@@ -24,7 +24,7 @@ export const useEarthEventsStore = create<EarthEventsState>()(
     error: null,
 
     // Función para obtener todos los viajes terrestres
-    fetchEarthEvents: async (): Promise<EarthEvent[]> => {
+    fetchEarthEvents: async (): Promise<EarthEventGetData[]> => {
       set({ loading: true, error: null });
       try {
         const earthEvents = await EarthEventsService.getAllEarthEvents();
@@ -38,7 +38,7 @@ export const useEarthEventsStore = create<EarthEventsState>()(
     },
 
     // Función para agregar un nuevo viaje terrestre
-    addEarthEvent: async (newEarthEvent: EarthEventCreate): Promise<boolean> => {
+    addEarthEvent: async (newEarthEvent: EarthEventRequest): Promise<boolean> => {
       set({ loading: true, error: null });
       try {
         const createdEarthEvent = await EarthEventsService.createEarthEvent(newEarthEvent);
@@ -57,7 +57,7 @@ export const useEarthEventsStore = create<EarthEventsState>()(
     },
 
     // Actualización de viaje terrestre, recibe el ID y los datos a actualizar
-    updateEarthEvent: async (id: number, earthEvent: EarthEventUpdate): Promise<boolean> => {
+    updateEarthEvent: async (id: number, earthEvent: EarthEventRequest): Promise<boolean> => {
       set({ loading: true, error: null });
       try {
         await EarthEventsService.updateEarthEvent(id, earthEvent);
@@ -90,6 +90,6 @@ export const useEarthEventsStore = create<EarthEventsState>()(
     },
 
     // Función para establecer el viaje activo (para edición)
-    setActiveEarthEvent: (earthEvent: EarthEvent | null) => set({ activeEarthEvent: earthEvent }),
+    setActiveEarthEvent: (earthEvent: EarthEventGetData | null) => set({ activeEarthEvent: earthEvent }),
   }))
 );

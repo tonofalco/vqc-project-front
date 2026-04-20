@@ -1,5 +1,5 @@
 import { CreateUserForm, UpdateUserForm } from "src/components";
-import { useModalStore, useModalTemplateStore, useUsersStore } from "../stores";
+import { useModalStore, useModalTemplateStore, useUsersStore } from "../../stores";
 
 
 export const useUser = () => {
